@@ -48,6 +48,39 @@ messageForm.addEventListener('submit', (e) => {
     entry.remove();
   });
   newMessage.appendChild(removeButton);
+
+  // add `edit` button after new message 
+
+  const editSaveButton = document.createElement('button');
+  editSaveButton.innerHTML = 'edit'
+  editSaveButton.addEventListener('click', (e) => {
+    const li = e.target.parentNode;
+    if (editSaveButton.innerHTML === 'edit') {
+      makeMessageEditable(li);
+      editSaveButton.innerHTML = 'save';
+    } else {
+      saveEditedMessage(li);
+      editSaveButton.innerHTML = 'edit';
+    }
+  });
+  newMessage.appendChild(editSaveButton);
+
   messagesList.appendChild(newMessage);
   messageForm.reset();
-})
+});
+
+function makeMessageEditable(li) {
+  const message = li.querySelector('span');
+
+  const input = document.createElement('input');
+  input.value = message.innerHTML;
+  li.replaceChild(input, message);
+}
+
+function saveEditedMessage(li) {
+  const input = li.querySelector('input');
+
+  const message = document.createElement('span');
+  message.innerHTML = input.value;
+  li.replaceChild(message, input);
+}
